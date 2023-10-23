@@ -1,0 +1,12 @@
+---
+applications:
+  - name: sli-app
+    memory: 128M
+    instances: 1
+    buildpack: go_buildpack
+    command: sli-app
+    env:
+      GOROUTER_LIST: 10.225.59.119:10.225.59.66
+      CF_PING_INSTANCE: 86b0587c-a87c-40e1-91b7-e83b82b51d56:1
+      CF_APP_DOMAIN: sli-app.cfapps-22.slot-35.tanzu-gss-labs.vmware.com
+      PING_SLEEP_INTERVAL_SECONDS: "2"
