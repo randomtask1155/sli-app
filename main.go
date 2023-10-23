@@ -1,4 +1,4 @@
-package mian
+package main
 
 import (
 	"crypto/tls"
@@ -78,7 +78,7 @@ func pingInstances() {
 			}
 			client := &http.Client{Transport: tr}
 
-			req, err := http.NewRequest(http.MethodGet, r, nil)
+			req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("https://%s", r), nil)
 			if err != nil {
 				fmt.Printf("client: could not create request: %s\n", err)
 				continue

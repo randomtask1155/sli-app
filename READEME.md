@@ -31,5 +31,10 @@ update CF_PING_INSTANCE env var in manifest.yml.  This will cause app index 0 to
 CF_PING_INSTANCE: 86b0587c-a87c-40e1-91b7-e83b82b51d56:1
 ```
 
+Push the app again to start it
+
+```
+cf push -i 2
+```
 
 
