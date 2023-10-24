@@ -128,7 +128,9 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 
-	go pingInstances()
+	if os.Getenv("DISABLE_PING") != "true" {
+		go pingInstances()
+	}
 	http.HandleFunc("/", rootHandler)
 	http.ListenAndServe(":"+os.Getenv("PORT"), nil)
 }
