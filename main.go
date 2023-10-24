@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
+	"math/rand"
 	"net/http"
 	"os"
 	"strconv"
@@ -18,6 +20,8 @@ var (
 	cfPingInstance string // APP-GUID:INSTNACE-INDEX-NUMBER
 	appDomain      string
 	sleepInterval  int64
+	rnumber        *rand.Rand
+	rsource        rand.Source
 )
 
 type ResponseBody struct {
@@ -26,6 +30,8 @@ type ResponseBody struct {
 }
 
 func init() {
+	rsource = rand.NewSource(42)
+	rnumber = rand.New(rsource)
 	myInstanceID = os.Getenv("CF_INSTANCE_INDEX")
 	routers := os.Getenv("GOROUTER_LIST")
 	cfPingInstance = os.Getenv("CF_PING_INSTANCE")
@@ -64,7 +70,7 @@ func pingInstances() {
 	}
 
 	if pi[1] == myInstanceID {
-		fmt.Println("ping instnace index matches my index.  Shutting down pings")
+		log.Println("ping instnace index matches my index.  Shutting down pings")
 		return
 	}
 
@@ -78,13 +84,15 @@ func pingInstances() {
 			}
 			client := &http.Client{Transport: tr}
 
-			req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("https://%s", r), nil)
+			req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("https://%s?r=%d", r, rnumber.Intn(32768)), nil)
 			if err != nil {
 				fmt.Printf("client: could not create request: %s\n", err)
 				continue
 			}
 			req.Header.Add("X-Cf-App-Instance", cfPingInstance)
 			req.Host = appDomain
+
+			fmt.Printf("Sending Request to %s\n", r)
 			res, err := client.Do(req)
 			if err != nil {
 				fmt.Printf("failed to send request via router %s to app %s at instance %s: %s\n", r, appDomain, cfPingInstance, err)
@@ -107,6 +115,7 @@ func pingInstances() {
 }
 
 func rootHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("received request")
 	res := ResponseBody{myInstanceID, "i am good"}
 	b, err := json.Marshal(&res)
 	if err != nil {
