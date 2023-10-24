@@ -10,7 +10,9 @@ update env vars in manifest.yml except for CF_PING_INSTANCE.  We need to push th
 GOROUTER_LIST: 10.1.1.119:10.1.1.66
 CF_PING_INSTANCE: APP-GUID:1
 CF_APP_DOMAIN: sli-app.apps.domain.com
+CF_PING_PATH: "/"
 PING_SLEEP_INTERVAL_SECONDS: "2"
+DISABLE_PING: "false"
 ```
 
 
