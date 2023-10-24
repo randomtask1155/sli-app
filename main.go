@@ -19,6 +19,7 @@ var (
 	routerIPs      []string
 	cfPingInstance string // APP-GUID:INSTNACE-INDEX-NUMBER
 	appDomain      string
+	pingPath       string
 	sleepInterval  int64
 	rnumber        *rand.Rand
 	rsource        rand.Source
@@ -37,6 +38,7 @@ func init() {
 	cfPingInstance = os.Getenv("CF_PING_INSTANCE")
 	appDomain = os.Getenv("CF_APP_DOMAIN")
 	si := os.Getenv("PING_SLEEP_INTERVAL_SECONDS")
+	pingPath = os.Getenv("CF_PING_PATH")
 
 	if myInstanceID == "" {
 		panic("env var CF_INSTANCE_INDEX not set")
@@ -84,7 +86,7 @@ func pingInstances() {
 			}
 			client := &http.Client{Transport: tr}
 
-			req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("https://%s?r=%d", r, rnumber.Intn(32768)), nil)
+			req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("https://%s%s?r=%d", r, pingPath, rnumber.Intn(32768)), nil)
 			if err != nil {
 				fmt.Printf("client: could not create request: %s\n", err)
 				continue
