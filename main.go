@@ -85,8 +85,8 @@ func pingInstances() {
 				TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 			}
 			client := &http.Client{Transport: tr}
-
-			req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("https://%s%s?r=%d", r, pingPath, rnumber.Intn(32768)), nil)
+			url := fmt.Sprintf("https://%s%s?r=%d", r, pingPath, rnumber.Intn(32768))
+			req, err := http.NewRequest(http.MethodGet, url, nil)
 			if err != nil {
 				fmt.Printf("client: could not create request: %s\n", err)
 				continue
@@ -94,7 +94,7 @@ func pingInstances() {
 			req.Header.Add("X-Cf-App-Instance", cfPingInstance)
 			req.Host = appDomain
 
-			fmt.Printf("Sending Request to %s\n", r)
+			fmt.Printf("Sending Request to %s\n", url)
 			res, err := client.Do(req)
 			if err != nil {
 				fmt.Printf("failed to send request via router %s to app %s at instance %s: %s\n", r, appDomain, cfPingInstance, err)
