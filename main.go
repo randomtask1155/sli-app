@@ -36,7 +36,7 @@ func init() {
 	myInstanceID = os.Getenv("CF_INSTANCE_INDEX")
 	routers := os.Getenv("GOROUTER_LIST")
 	cfPingInstance = os.Getenv("CF_PING_INSTANCE")
-	appDomain = os.Getenv("CF_APP_DOMAIN")
+	appDomain = os.Getenv("CF_APP_FQDN")
 	si := os.Getenv("PING_SLEEP_INTERVAL_SECONDS")
 	pingPath = os.Getenv("CF_PING_PATH")
 

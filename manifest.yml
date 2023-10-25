@@ -8,7 +8,7 @@ applications:
     env:
       GOROUTER_LIST: 10.1.1.119:10.1.1.66:some-domain-name.com
       CF_PING_INSTANCE: APP-GUID:1
-      CF_APP_DOMAIN: sli-app.my-domain.com
+      CF_APP_FQDN: sli-app.my-domain.com
       CF_PING_PATH: "/"
       PING_SLEEP_INTERVAL_SECONDS: "2"
       DISABLE_PING: "false"
